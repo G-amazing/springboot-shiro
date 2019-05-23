@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/lcash?useUnicode=true&serverTimezone=PRC&characterEncoding=utf8&useSSL=false
+    username: root
+    password:
