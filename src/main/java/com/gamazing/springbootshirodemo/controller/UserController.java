@@ -25,6 +25,13 @@ public class UserController {
         return "unAuth";
     }
 
+    @RequestMapping("/logout")
+    public String logout() {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        return "login";
+    }
+
     @RequestMapping("testThymeleaf")
     public String testThymeleaf(Model model) {
         model.addAttribute("name","张三");
@@ -37,6 +44,7 @@ public class UserController {
         return "user/add";
     }
 
+    @RequiresPermissions("user:update")
     @RequestMapping("/update")
     public String update() {
         return "user/update";
