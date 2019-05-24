@@ -1,7 +1,9 @@
 package com.gamazing.springbootshirodemo.shiro;
 
+import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.mgt.SecurityManager;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +35,13 @@ public class ShiroConfig {
         filterMap.put("/update", "authc");*/
         filterMap.put("/testThymeleaf", "anon");
         filterMap.put("/login", "anon");
+
+        //授权过滤器
+        //filterMap.put("/add", "perms[user:add]");
+        filterMap.put("/update", "perms[user:update]");
+
+
+
         filterMap.put("/*", "authc");
 
         // 设置过滤权限
@@ -40,6 +49,9 @@ public class ShiroConfig {
 
         // 修改默认登录页面
         shiroFilterFactoryBean.setLoginUrl("/toLogin");
+
+        // 设置为授权提示页面
+        shiroFilterFactoryBean.setUnauthorizedUrl("/unAuth");
 
         return shiroFilterFactoryBean;
     }
@@ -60,6 +72,13 @@ public class ShiroConfig {
     @Bean("myRealm")
     public MyRealm getRealm() {
         return new MyRealm();
+    }
+
+    @Bean
+    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(@Qualifier("securityManager") SecurityManager securityManager) {
+        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
+        return authorizationAttributeSourceAdvisor;
     }
 
 }

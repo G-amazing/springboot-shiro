@@ -1,12 +1,11 @@
 package com.gamazing.springbootshirodemo.controller;
 
-import com.gamazing.springbootshirodemo.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,12 +20,18 @@ public class UserController {
         return "login";
     }
 
+    @RequestMapping("/unAuth")
+    public String unAuth() {
+        return "unAuth";
+    }
+
     @RequestMapping("testThymeleaf")
     public String testThymeleaf(Model model) {
         model.addAttribute("name","张三");
         return "test";
     }
 
+    @RequiresPermissions("user:add")
     @RequestMapping("/add")
     public String add() {
         return "user/add";
